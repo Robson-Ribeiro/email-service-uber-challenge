@@ -1,5 +1,6 @@
 package com.Uber.EmailService.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.Uber.EmailService.dto.EmailDto;
+import com.Uber.EmailService.service.EmailService;
 
 import jakarta.validation.Valid;
 
@@ -16,12 +18,12 @@ import jakarta.validation.Valid;
 @CrossOrigin
 public class EmailController {
     
-    //@Autowired
-    //private EmailService emailService;
+    @Autowired
+    private EmailService emailService;
 
     @PostMapping
     public ResponseEntity sendEmail(@Valid @RequestBody EmailDto email) {
-        //emailService.sendEmail(email);
+        emailService.sendEmail(email);
         return ResponseEntity.ok().body("Your email has been sent successfully!");
     }
 }
