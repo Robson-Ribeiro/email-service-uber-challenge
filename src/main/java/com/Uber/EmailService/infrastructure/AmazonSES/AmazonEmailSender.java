@@ -1,0 +1,38 @@
+package com.Uber.EmailService.infrastructure.AmazonSES;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.Uber.EmailService.adapter.EmailSenderAdapter;
+
+import com.amazonaws.AmazonServiceException;
+import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
+import com.amazonaws.services.simpleemail.model.*;
+
+@Service
+public class AmazonEmailSender implements EmailSenderAdapter {
+ 
+    private final AmazonSimpleEmailService amazonSesClient;
+
+    @Autowired
+    public AmazonEmailSender(AmazonSimpleEmailService amazonSesClient) {
+        this.amazonSesClient = amazonSesClient;
+    }
+
+    @Override
+    public void sendEmail(String receiverEmail, String subject, String body) {
+        SendEmailRequest request = new SendEmailRequest()
+            .withSource("myEmail")
+            .withDestination(new Destination().withToAddresses(receiverEmail))
+            .withMessage(new Message()
+                .withSubject(new Content(subject))
+                .withBody(new Body().withText(new Content(body)))
+            );
+
+        try {
+            this.amazonSesClient.sendEmail(request);
+        } catch (Exception e) {
+            throw new AmazonServiceException("Unable to send the e-mail.");
+        }
+    }
+}
