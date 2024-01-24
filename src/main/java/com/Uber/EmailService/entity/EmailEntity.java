@@ -28,9 +28,7 @@ public class EmailEntity {
     private Long id;
 
     @Column(nullable = false)
-    private String from;
-    @Column(nullable = false)
-    private String to;
+    private String receiverEmail;
     @Column(nullable = false)
     private String subject;
     @Column(nullable = false)

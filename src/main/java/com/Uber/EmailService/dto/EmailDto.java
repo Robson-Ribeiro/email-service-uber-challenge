@@ -15,9 +15,7 @@ public class EmailDto {
     private Long id;
 
     @NotBlank
-    private String from;
-    @NotBlank
-    private String to;
+    private String receiverEmail;
     @NotBlank
     private String subject;
     @NotBlank
