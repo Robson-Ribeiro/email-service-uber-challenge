@@ -16,7 +16,7 @@ import jakarta.validation.Valid;
 @CrossOrigin
 public class EmailController {
     
-    //@Autowire
+    //@Autowired
     //private EmailService emailService;
 
     @PostMapping
