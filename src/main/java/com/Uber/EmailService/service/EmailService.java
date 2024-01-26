@@ -16,6 +16,7 @@ public class EmailService {
 
     private EmailSenderAdapter emailSenderAdapter;
 
+    @Autowired
     public EmailService(EmailSenderAdapter adapter) {
         this.emailSenderAdapter = adapter;
     }
