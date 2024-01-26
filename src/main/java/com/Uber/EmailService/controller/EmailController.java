@@ -21,9 +21,15 @@ public class EmailController {
     @Autowired
     private EmailService emailService;
 
+    
     @PostMapping
-    public ResponseEntity sendEmail(@Valid @RequestBody EmailDto email) {
-        emailService.sendEmail(email);
-        return ResponseEntity.ok().body("Your email has been sent successfully!");
+    public ResponseEntity<String> sendEmail(@Valid @RequestBody EmailDto email) {
+        try {
+            emailService.sendEmail(email);
+            return ResponseEntity.ok().body("Your e-mail has been sent successfully!");
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.internalServerError().body("We were unable to send your email due to an error!");
+        }
     }
 }
