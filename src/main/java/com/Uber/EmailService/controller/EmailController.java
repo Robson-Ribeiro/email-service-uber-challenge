@@ -1,6 +1,9 @@
 package com.Uber.EmailService.controller;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,6 +15,9 @@ import com.Uber.EmailService.dto.EmailDto;
 import com.Uber.EmailService.service.EmailService;
 
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 @RequestMapping(value = "/email")
@@ -29,7 +35,17 @@ public class EmailController {
             return ResponseEntity.ok().body("Your e-mail has been sent successfully!");
         } catch (Exception e) {
             System.out.println(e);
-            return ResponseEntity.internalServerError().body("We were unable to send your email due to an error!");
+            return ResponseEntity.internalServerError().body("We were unable to send your e-mail due to an error!");
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity getAllEmails() {
+        try {
+            return ResponseEntity.ok().body(emailService.getAllEmails());
+        } catch (Exception e) {
+            System.out.println(e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("We were unable to get the e-mails!");
         }
     }
 }
