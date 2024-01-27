@@ -3,6 +3,7 @@ package com.Uber.EmailService.infrastructure.AmazonSES;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.Uber.EmailService.Exception.SendEmailException;
 import com.Uber.EmailService.adapter.EmailSenderAdapter;
 
 import com.amazonaws.AmazonServiceException;
@@ -22,7 +23,7 @@ public class AmazonEmailSender implements EmailSenderAdapter {
     @Override
     public void sendEmail(String receiverEmail, String subject, String body) {
         SendEmailRequest request = new SendEmailRequest()
-            .withSource("myEmail")
+            .withSource("email@gmail.com")
             .withDestination(new Destination().withToAddresses(receiverEmail))
             .withMessage(new Message()
                 .withSubject(new Content(subject))
@@ -31,8 +32,8 @@ public class AmazonEmailSender implements EmailSenderAdapter {
 
         try {
             this.amazonSesClient.sendEmail(request);
-        } catch (Exception e) {
-            throw new AmazonServiceException("Unable to send the e-mail.");
+        } catch (AmazonServiceException e) {
+            throw new SendEmailException("Unable to send the e-mail.", e);
         }
     }
 }
