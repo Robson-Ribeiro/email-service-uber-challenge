@@ -14,7 +14,7 @@ public class LocalEmailSender implements EmailSenderAdapter {
 
     public void sendEmail(String receiverEmail, String subject, String body) {
         var message = new SimpleMailMessage();
-        message.setFrom("myemail@email.com");
+        message.setFrom("noreply@email.com");
         message.setTo(receiverEmail);
         message.setSubject(subject);
         message.setText(body);

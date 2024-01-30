@@ -12,7 +12,7 @@ import com.Uber.EmailService.repository.EmailRepository;
 
 @Service
 public class EmailService {
-    
+
     @Autowired
     private EmailRepository emailRepository;
 
@@ -43,13 +43,12 @@ public class EmailService {
                 return false;
             }
         }
-
     }
 
     public List<EmailDto> getAllEmails() {
         Sort sort = Sort.by("id").ascending().and(
-				Sort.by("subject").ascending()	
-		);
+                Sort.by("subject").ascending()
+            );
 
         List<EmailEntity> emailList = emailRepository.findAll(sort);
         return emailList.stream().map(EmailDto::new).toList();
