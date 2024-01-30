@@ -3,7 +3,6 @@ package com.Uber.EmailService.controller;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +15,6 @@ import com.Uber.EmailService.service.EmailService;
 
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
@@ -30,13 +28,11 @@ public class EmailController {
     
     @PostMapping
     public ResponseEntity<String> sendEmail(@Valid @RequestBody EmailDto email) {
-        try {
-            emailService.sendEmail(email);
-            return ResponseEntity.ok().body("Your e-mail has been sent successfully!");
-        } catch (Exception e) {
-            System.out.println(e);
+            var isSuccess = emailService.sendEmail(email);
+            if(isSuccess) {
+                return ResponseEntity.ok().body("Your e-mail has been sent successfully!");
+            }
             return ResponseEntity.internalServerError().body("We were unable to send your e-mail due to an error!");
-        }
     }
 
     @GetMapping

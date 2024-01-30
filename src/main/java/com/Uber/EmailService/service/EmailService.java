@@ -17,17 +17,33 @@ public class EmailService {
     private EmailRepository emailRepository;
 
     private EmailSenderAdapter emailSenderAdapter;
+    private EmailSenderAdapter secondaryEmailSenderAdapter;
 
     @Autowired
-    public EmailService(EmailSenderAdapter adapter) {
+    public EmailService(EmailSenderAdapter adapter, EmailSenderAdapter adapter2) {
         this.emailSenderAdapter = adapter;
+        this.secondaryEmailSenderAdapter = adapter2;
     }
 
     public boolean sendEmail(EmailDto emailDto) {
-        emailSenderAdapter.sendEmail(emailDto.getReceiverEmail(), emailDto.getSubject(), emailDto.getBody());
-        EmailEntity emailEntity = new EmailEntity(emailDto);
-        emailRepository.save(emailEntity);
-        return true;
+        try {
+            emailSenderAdapter.sendEmail(emailDto.getReceiverEmail(), emailDto.getSubject(), emailDto.getBody());
+            EmailEntity emailEntity = new EmailEntity(emailDto);
+            emailRepository.save(emailEntity);
+            return true;
+        } catch (Exception e) {
+            System.out.println(e);
+            try {
+                secondaryEmailSenderAdapter.sendEmail(emailDto.getReceiverEmail(), emailDto.getSubject(), emailDto.getBody());
+                EmailEntity emailEntity = new EmailEntity(emailDto);
+                emailRepository.save(emailEntity);
+                return true;
+            } catch (Exception ex) {
+                System.out.println(ex);
+                return false;
+            }
+        }
+
     }
 
     public List<EmailDto> getAllEmails() {
