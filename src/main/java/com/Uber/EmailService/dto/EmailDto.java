@@ -28,4 +28,10 @@ public class EmailDto {
     public EmailDto(EmailEntity email) {
         BeanUtils.copyProperties(email, this);
     }
+
+    public EmailDto(String receiverEmail, String subject, String body) {
+        this.receiverEmail = receiverEmail;
+        this.subject = subject;
+        this.body = body;
+    }
 }

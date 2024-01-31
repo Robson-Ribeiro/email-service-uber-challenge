@@ -1,5 +1,7 @@
 package com.Uber.EmailService;
 
+import javax.print.attribute.standard.Media;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -10,6 +12,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import com.Uber.EmailService.dto.EmailDto;
 import com.Uber.EmailService.entity.EmailEntity;
 import com.Uber.EmailService.repository.EmailRepository;
 
@@ -51,4 +54,73 @@ class EmailServiceApplicationTests {
 			.jsonPath("$[0].body").isEqualTo(email.getBody());
 	}
 
+	@Test
+	void sendEmailSuccess() {
+		EmailDto emailDto = new EmailDto("noreply@gmail.com", "999", "O número da sorte!");
+
+		webTestClient
+			.post()
+			.uri("email")
+			.bodyValue(emailDto)
+			.exchange()
+			.expectStatus().isOk()
+			.expectBody()
+			.jsonPath("$").isNotEmpty()
+			.jsonPath("$").isEqualTo("Your e-mail has been sent successfully!");
+	}
+
+	@Test
+	void sendEmailFailure() {
+		EmailDto emailDto = new EmailDto("", "", "");
+
+		webTestClient
+			.post()
+			.uri("email")
+			.bodyValue("")
+			.exchange()
+			.expectStatus().isEqualTo(415);
+
+		webTestClient
+			.post()
+			.uri("email")
+			.bodyValue(emailDto)
+			.exchange()
+			.expectStatus().isEqualTo(400);
+
+		emailDto = new EmailDto("noreply@gmail.com", "", "");
+
+		webTestClient
+			.post()
+			.uri("email")
+			.bodyValue(emailDto)
+			.exchange()
+			.expectStatus().isEqualTo(400);
+
+		emailDto = new EmailDto("noreply@gmail.com", "Topic 1", "");
+
+		webTestClient
+			.post()
+			.uri("email")
+			.bodyValue(emailDto)
+			.exchange()
+			.expectStatus().isEqualTo(400);
+
+		emailDto = new EmailDto("", "Topic 1", "noreply");
+
+		webTestClient
+			.post()
+			.uri("email")
+			.bodyValue(emailDto)
+			.exchange()
+			.expectStatus().isEqualTo(400);
+
+		emailDto = new EmailDto("noreply@gmail.com", "", "noreply");
+
+		webTestClient
+			.post()
+			.uri("email")
+			.bodyValue(emailDto)
+			.exchange()
+			.expectStatus().isEqualTo(400);
+	}
 }
