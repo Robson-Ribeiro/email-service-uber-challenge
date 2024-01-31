@@ -1,8 +1,7 @@
 package com.Uber.EmailService.infrastructure.AmazonSES;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import com.Uber.EmailService.Exception.SendEmailException;
 import com.Uber.EmailService.adapter.EmailSenderAdapter;
@@ -11,8 +10,7 @@ import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.model.*;
 
-@Primary
-@Service
+@Component("amazonEmailSender")
 public class AmazonEmailSender implements EmailSenderAdapter {
  
     private final AmazonSimpleEmailService amazonSesClient;
@@ -25,7 +23,7 @@ public class AmazonEmailSender implements EmailSenderAdapter {
     @Override
     public void sendEmail(String receiverEmail, String subject, String body) {
         SendEmailRequest request = new SendEmailRequest()
-            .withSource("noreply@gmail.com")
+            .withSource("myemail@gmail.com")
             .withDestination(new Destination().withToAddresses(receiverEmail))
             .withMessage(new Message()
                 .withSubject(new Content(subject))

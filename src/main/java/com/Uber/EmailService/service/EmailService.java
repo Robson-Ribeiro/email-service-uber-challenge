@@ -2,6 +2,7 @@ package com.Uber.EmailService.service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -16,14 +17,13 @@ public class EmailService {
     @Autowired
     private EmailRepository emailRepository;
 
+    @Autowired
+    @Qualifier("amazonEmailSender")
     private EmailSenderAdapter emailSenderAdapter;
-    private EmailSenderAdapter secondaryEmailSenderAdapter;
 
     @Autowired
-    public EmailService(EmailSenderAdapter adapter, EmailSenderAdapter adapter2) {
-        this.emailSenderAdapter = adapter;
-        this.secondaryEmailSenderAdapter = adapter2;
-    }
+    @Qualifier("localEmailSender")
+    private EmailSenderAdapter secondaryEmailSenderAdapter;
 
     public boolean sendEmail(EmailDto emailDto) {
         try {
