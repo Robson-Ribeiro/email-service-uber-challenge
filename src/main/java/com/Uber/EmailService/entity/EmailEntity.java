@@ -38,4 +38,9 @@ public class EmailEntity {
         BeanUtils.copyProperties(email, this);
     }
 
+    public EmailEntity(String receiverEmail, String subject, String body) {
+        this.receiverEmail = receiverEmail;
+        this.subject = subject;
+        this.body = body;
+    }
 }
