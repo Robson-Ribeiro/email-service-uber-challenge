@@ -1,6 +1,9 @@
 package com.Uber.EmailService;
 
-import javax.print.attribute.standard.Media;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +70,14 @@ class EmailServiceApplicationTests {
 			.expectBody()
 			.jsonPath("$").isNotEmpty()
 			.jsonPath("$").isEqualTo("Your e-mail has been sent successfully!");
+
+		Optional<EmailEntity> email = emailRepository.findById( (long) 1);
+
+		assertTrue(email.isPresent());
+
+		assertEquals(email.get().getReceiverEmail(), emailDto.getReceiverEmail());
+		assertEquals(email.get().getSubject(), emailDto.getSubject());
+		assertEquals(email.get().getBody(), emailDto.getBody());
 	}
 
 	@Test
