@@ -10,6 +10,10 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 
+/**
+ * Classe de configuração do Amazon Simple E-mail Service(SES).
+ */
+
 @Configuration
 public class AmazonSesConfig {
 
